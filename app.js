@@ -22,60 +22,61 @@ const traeTodosLosPersonajes = async () => {
         await peticion(i);
     }
     var personajeSolicitado = prompt ("Por favor escriba un personaje de Disney", "Queen");
-    buscarPersonaje(personajeSolicitado);
+    let personajeEncontrado = buscarPersonaje(personajeSolicitado);
+    // console.log(personajeEncontrado);
+    pintarGrafica(personajeEncontrado);
 }
 
 
 
 const buscarPersonaje = (unPersonaje) => {
-    listaPersonajes.forEach(personaje =>{
+    let resultado
+    for (var personaje of listaPersonajes){
         if(personaje.name.toUpperCase().includes(unPersonaje.toUpperCase())){
-         console.log(personaje)   
-        }
-        // else 
-        // console.log("no se encontraron coincidencias");
-    })
+            //  console.log(personaje)
+            resultado = personaje
+            break
+            }
+    }
+    return resultado
 }
 
-const pintarGrafica =() => {
+const pintarGrafica =(apariciones) => {
+    console.log(apariciones);
     const ctx = document.getElementById('myChart');
-  const myChart = new Chart(ctx, {
-      type: 'polarArea',
-      data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  });
+    const myChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: ['TVShows', 'Films', 'VideoGames'],
+            datasets: [{
+                label: 'Apariciones',
+                data: [apariciones.tvShows.length,apariciones.films.length,apariciones.videoGames.length],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    document.getElementById('nombrePersonaje').innerHTML=apariciones.name
+    document.getElementById('imagenPersonaje').src=apariciones.imageUrl
 }
 
 let url = 'https://api.disneyapi.dev/characters?page=';
 let listaPersonajes =[];
 traeTodosLosPersonajes();
-pintarGrafica();
+// pintarGrafica();
